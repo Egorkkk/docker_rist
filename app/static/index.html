@@ -1,0 +1,38 @@
+<!doctype html>
+<meta charset="utf-8"/>
+<title>RIST Sender Manager</title>
+<style>
+  body{font:14px/1.4 system-ui,Segoe UI,Arial,sans-serif;max-width:920px;margin:32px auto;padding:0 16px}
+  textarea{width:100%;height:60vh;font:13px/1.4 ui-monospace,Consolas,monospace}
+  .row{display:flex;gap:8px;margin:8px 0}
+  button{padding:8px 14px;border-radius:8px;border:1px solid #ccc;background:#f8f8f8;cursor:pointer}
+  button:hover{background:#eee}
+  .status{margin-left:8px;color:#666}
+</style>
+<h2>RIST Sender – Config</h2>
+<div class="row">
+  <button id="load">Load</button>
+  <button id="save">Save</button>
+  <button id="apply">Apply (reload pipeline)</button>
+  <span class="status" id="st"></span>
+</div>
+<textarea id="cfg" spellcheck="false"></textarea>
+<script>
+const t = document.getElementById('cfg');
+const st = document.getElementById('st');
+function msg(m,c){st.textContent=m;st.style.color=c||'#666';}
+async function load(){ const r=await fetch('/api/config/raw'); t.value=await r.text(); msg('Loaded'); }
+async function save(){
+  const r=await fetch('/api/config/raw',{method:'POST',headers:{'Content-Type':'text/plain'},body:t.value});
+  if(!r.ok){ msg('Save error: '+await r.text(),'#b00'); return; }
+  msg('Saved','#090');
+}
+async function apply(){
+  const r=await fetch('/api/apply',{method:'POST'});
+  msg(r.ok?'Reloaded':'Apply error','#090');
+}
+document.getElementById('load').onclick=load;
+document.getElementById('save').onclick=save;
+document.getElementById('apply').onclick=apply;
+load();
+</script>

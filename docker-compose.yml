@@ -1,0 +1,14 @@
+services:
+  sender:
+    build: .
+    container_name: rist-sender
+    # network_mode: host        # ← УДАЛИТЬ/закомментировать
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./config:/data
+      - ./logs:/var/log/rist
+    ports:
+      - "8080:8080"   # веб-UI менеджера
+      - "1935:1935"   # RTMP ingest для OBS с Windows
+    restart: unless-stopped

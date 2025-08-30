@@ -1,0 +1,26 @@
+source:
+  mode: test                  # rtmp | uvc | test
+  rtmp_url: "rtmp://127.0.0.1:1935/live/stream"
+  uvc_video: "/dev/video0"
+  uvc_audio: "hw:1,0"
+
+encode:
+  video_bitrate: "6000k"
+  audio_bitrate: "128k"
+  framerate: 25
+  gop_seconds: 2
+
+rist:
+  profile: 1
+  buffer_ms: 1200
+  aes: 128
+  secret: "pass123"
+  base_udp_port: 10000
+  peers:                        # 🔴 РАЗНЫЕ ПОРТЫ на Mist для каждого пути
+    - "rist://83.222.26.3:8200?weight=5"
+
+logging:
+  to_file: true
+  dir: "/var/log/rist"
+  verbose: 3
+  stats_ms: 0

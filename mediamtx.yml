@@ -1,0 +1,15 @@
+# MediaMTX v1.14+ минимальный конфиг
+
+# включаем только RTMP ingest (1935)
+rtmp: yes
+rtsp: no
+hls: no
+webrtc: no
+
+# логирование попроще
+logLevel: info
+
+# разрешаем публиковать без пароля (для локальной отладки)
+paths:
+  all:
+    # пустой publishUser/Pass эквивалент "без авторизации"
